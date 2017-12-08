@@ -41,7 +41,8 @@ services:
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
     volumes:
       - ./config/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
-      - ./tick:/home/kapacitor
+      - ./config/tick-scripts:/etc/kapacitor/load:ro
+      - ./logs:/var/log/
     links:
       - influxdb
     ports:
