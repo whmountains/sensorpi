@@ -392,6 +392,10 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+math.js@^1.1.40:
+  version "1.1.40"
+  resolved "https://registry.yarnpkg.com/math.js/-/math.js-1.1.40.tgz#6fe7ab026e60237273cb8f0952d2f0489156d45b"
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"

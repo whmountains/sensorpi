@@ -8,9 +8,9 @@ const fs = require('mz/fs')
 const path = require('path')
 const resolve = require('resolve-dir')
 const { Gpio } = require('onoff')
-const isNumber = require('is-number')
 const R = require('ramda')
 const debug = require('debug')
+const math = require('math.js')
 
 const port = process.env.PORT || 3000
 const configPath = resolve('~/sensorpi-config.toml')
@@ -101,11 +101,14 @@ http.listen(port, function() {
 function getCalibratedReading(config, reading) {
   return {
     temperature:
-      reading.temperature * config.temp_coefficient + config.temp_offset,
+      reading.temperature * config.calibration.temperature.coefficient +
+      config.calibration.tempreature.offset,
     humidity:
-      reading.humidity * config.humidity_coefficient + config.humidity_offset,
+      reading.humidity * config.calbration.humidity.coefficient +
+      config.calbration.humidity.offset,
     pressure:
-      reading.pressure * config.pressure_coefficient + config.pressure_offset,
+      reading.pressure * config.calbration.pressure.coefficient +
+      config.calbration.pressure.offset,
   }
 }
 
@@ -116,12 +119,20 @@ async function getReading() {
 }
 
 const defaultConfig = {
-  temp_coefficient: 1,
-  temp_offset: 0,
-  humidity_coefficient: 1,
-  humidity_offset: 0,
-  pressure_coefficient: 1,
-  pressure_offset: 0,
+  calibration: {
+    temperature: {
+      coefficient: 1,
+      offset: 0,
+    },
+    humidity: {
+      coefficient: 1,
+      offset: 0,
+    },
+    pressure: {
+      coefficient: 1,
+      offset: 0,
+    },
+  },
   rules: [],
 }
 
@@ -142,30 +153,12 @@ async function getConfig() {
 // apply setpoints from the config file
 function applySetpoints(config, reading) {
   R.forEach(rule => {
-    if (matchConditions(rule.enable_conditions, reading[rule.metric])) {
-      outputRegister[event.port] = Number(!!rule.state)
-    } else if (matchConditions(rule.disable_conditions, reading[rule.metric])) {
-      outputRegister[event.port] = Number(!rule.state)
+    if (math.eval(rule.condition || 'true', reading)) {
+      Object.assign(outputRegister, rule.outputs)
     }
   }, config.rules)
 
   updateOutputs()
-}
-
-function matchConditions(conditions, value) {
-  if (!conditions) {
-    return false
-  }
-
-  if (conditions.greater_equal && value < conditions.greater_equal) {
-    return false
-  }
-
-  if (conditions.less_equal && value > conditions.less_equal) {
-    return false
-  }
-
-  return true
 }
 
 // update the outputs
