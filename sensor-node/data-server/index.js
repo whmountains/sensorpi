@@ -144,11 +144,11 @@ function applySetpoints(config, reading) {
   R.forEach(event => {
     let newPortState = !!event.state
 
-    if (event.greater_equal && reading[event.metric] < event.value) {
+    if (event.greater_equal && reading[event.metric] < event.greater_equal) {
       newPortState = !newPortState
     }
 
-    if (event.less_equal && reading[event.metric] > event.value) {
+    if (event.less_equal && reading[event.metric] > event.less_equal) {
       newPortState = !newPortState
     }
 
