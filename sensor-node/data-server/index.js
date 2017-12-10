@@ -146,7 +146,7 @@ async function getConfig() {
 
 // apply setpoints from the config file
 function applySetpoints(config, reading) {
-  outputRegister = config.events.reduce((register, event) => {
+  config.events.forEach(event => {
     let newPortState = !!event.state
 
     if (event.greaterEqual && reading[event.metric] < event.value) {
@@ -157,8 +157,8 @@ function applySetpoints(config, reading) {
       newPortState = !newPortState
     }
 
-    register[event.port] = Number(newPortState)
-  }, outputRegister)
+    outputRegister[event.port] = Number(newPortState)
+  })
 
   updateOutputs()
 }
