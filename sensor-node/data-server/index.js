@@ -77,13 +77,8 @@ app.get('/live', function(req, res) {
 
 // manually change a GPIO
 app.get('/write/:port/:value', (req, res) => {
-  const value = Number(!!req.params.value)
-  let port = req.params.port
-
-  // cast port to number
-  if (isNumber(port)) {
-    port = Number(port)
-  }
+  const value = Number(!!Number(req.params.value))
+  const port = req.params.port
 
   if (![0, 1].includes(value)) {
     return res.status(400).send('Please only write 0 or 1')
