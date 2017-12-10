@@ -1,8 +1,8 @@
 {
-  "name": "node-helper",
+  "name": "sensorpi-node",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
+  "license": "AGPL-v3",
   "dependencies": {
     "express": "^4.16.2",
     "luxon": "^0.2.7",
