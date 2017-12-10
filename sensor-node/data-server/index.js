@@ -102,7 +102,7 @@ function getCalibratedReading(config, reading) {
   return {
     temperature:
       reading.temperature * config.calibration.temperature.coefficient +
-      config.calibration.tempreature.offset,
+      config.calibration.temperature.offset,
     humidity:
       reading.humidity * config.calibration.humidity.coefficient +
       config.calibration.humidity.offset,
