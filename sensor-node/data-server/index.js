@@ -1,6 +1,6 @@
-var app = require('express')()
-var http = require('http').Server(app)
-var io = require('socket.io')(http)
+const express = require('express')
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 const execa = require('execa')
 const morgan = require('morgan')
 const toml = require('toml')
@@ -10,10 +10,14 @@ const resolve = require('resolve-dir')
 const { Gpio } = require('onoff')
 const isNumber = require('is-number')
 const R = require('ramda')
+const debug = require('debug')
 
 const port = process.env.PORT || 3000
 const configPath = resolve('~/sensorpi-config.toml')
 const readInterval = 1000
+
+const app = express()
+const log = debug('sensorpi-node')
 
 const portMap = {
   1: 23,
@@ -25,15 +29,13 @@ const portMap = {
   vcc: 11,
 }
 
-let outputRegister = {
-  1: 0,
-  2: 0,
-  3: 0,
-  4: 0,
-  5: 0,
-  6: 0,
-  vcc: 1,
-}
+let outputRegister = R.mapObjIndexed((pin, port) => {
+  if (['vcc'].includes(port)) {
+    return 1
+  }
+
+  return 0
+})
 
 const ports = R.mapObjIndexed((pin, port) => {
   const mode = outputRegister[port] ? 'high' : 'low'
@@ -58,7 +60,7 @@ setInterval(async () => {
 
   // output reading
   io.emit('reading', lastReading)
-  console.log(lastReading)
+  log(lastReading)
 }, readInterval)
 
 // get last reading
