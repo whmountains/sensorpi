@@ -91,6 +91,11 @@ app.get('/write/:port/:value', (req, res) => {
 
   outputRegister[port] = value
   updateOutputs()
+
+  res.send({
+    status: 'success',
+    portState: outputRegister,
+  })
 })
 
 // list current port state
