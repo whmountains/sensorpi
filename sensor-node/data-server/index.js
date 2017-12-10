@@ -141,21 +141,31 @@ async function getConfig() {
 
 // apply setpoints from the config file
 function applySetpoints(config, reading) {
-  R.forEach(event => {
-    let newPortState = !!event.state
-
-    if (event.greater_equal && reading[event.metric] < event.greater_equal) {
-      newPortState = !newPortState
+  R.forEach(rule => {
+    if (matchConditions(rule.enable_conditions, reading[rule.metric])) {
+      outputRegister[event.port] = Number(!!rule.state)
+    } else if (matchConditions(rule.disable_conditions, reading[rule.metric])) {
+      outputRegister[event.port] = Number(!rule.state)
     }
-
-    if (event.less_equal && reading[event.metric] > event.less_equal) {
-      newPortState = !newPortState
-    }
-
-    outputRegister[event.port] = Number(newPortState)
   }, config.rules)
 
   updateOutputs()
+}
+
+function matchConditions(conditions, value) {
+  if (!conditions) {
+    return false
+  }
+
+  if (conditions.greater_equal && value < conditions.greater_equal) {
+    return false
+  }
+
+  if (conditions.less_equal && value > conditions.less_equal) {
+    return false
+  }
+
+  return true
 }
 
 // update the outputs
