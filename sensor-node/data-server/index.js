@@ -25,12 +25,21 @@ const portMap = {
   vcc: 11,
 }
 
-const ports = R.mapObjIndexed((pin, port) => {
-  return new Gpio(pin, 'out')
-}, portMap)
+let outputRegister = {
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+  6: 0,
+  vcc: 1,
+}
 
-// vcc is high by default
-ports.vcc.writeSync(1)
+const ports = R.mapObjIndexed((pin, port) => {
+  const mode = outputRegister[port] ? 'high' : 'low'
+
+  return new Gpio(pin, mode)
+}, portMap)
 
 // request logging
 app.use(morgan('dev'))
@@ -77,6 +86,11 @@ app.get('/write/:port/:value', (req, res) => {
   }
 
   ports[port].writeSync(value)
+})
+
+// list current port state
+apap.get('/portState', (req, res) => {
+  res.send(outputRegister)
 })
 
 // boot the server
@@ -127,8 +141,8 @@ async function getConfig() {
 }
 
 // apply setpoints from the config file
-async function applySetpoints(config, reading) {
-  const outputRegister = config.events.reduce((register, event) => {
+function applySetpoints(config, reading) {
+  outputRegister = config.events.reduce((register, event) => {
     let newPortState = !!event.state
 
     if (event.greaterEqual && reading[event.metric] < event.value) {
@@ -140,8 +154,13 @@ async function applySetpoints(config, reading) {
     }
 
     register[event.port] = Number(newPortState)
-  })
+  }, outputRegister)
 
+  updateOutputs()
+}
+
+// update the outputs
+function updateOutputs() {
   outputRegister.forEach((state, port) => {
     ports[port].writeSync(state)
   })
