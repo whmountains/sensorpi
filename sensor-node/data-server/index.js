@@ -104,11 +104,11 @@ function getCalibratedReading(config, reading) {
       reading.temperature * config.calibration.temperature.coefficient +
       config.calibration.tempreature.offset,
     humidity:
-      reading.humidity * config.calbration.humidity.coefficient +
-      config.calbration.humidity.offset,
+      reading.humidity * config.calibration.humidity.coefficient +
+      config.calibration.humidity.offset,
     pressure:
-      reading.pressure * config.calbration.pressure.coefficient +
-      config.calbration.pressure.offset,
+      reading.pressure * config.calibration.pressure.coefficient +
+      config.calibration.pressure.offset,
   }
 }
 
