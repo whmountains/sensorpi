@@ -89,7 +89,7 @@ app.get('/write/:port/:value', (req, res) => {
 })
 
 // list current port state
-apap.get('/portState', (req, res) => {
+app.get('/portState', (req, res) => {
   res.send(outputRegister)
 })
 
