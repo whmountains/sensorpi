@@ -10,7 +10,7 @@ const resolve = require('resolve-dir')
 const { Gpio } = require('onoff')
 const R = require('ramda')
 const debug = require('debug')
-const math = require('math.js')
+const math = require('mathjs')
 
 const port = process.env.PORT || 3000
 const configPath = resolve('~/sensorpi-config.toml')
