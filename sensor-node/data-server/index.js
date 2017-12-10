@@ -18,7 +18,7 @@ app.use(morgan('dev'))
 // read the sensor regularly
 let lastReading = {}
 setInterval(async () => {
-  lastReading = getCalibratedReading()
+  lastReading = await getCalibratedReading()
   io.emit('reading', lastReading)
   console.log(lastReading)
 }, readInterval)

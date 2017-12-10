@@ -5,7 +5,7 @@ Collect temperature and humidity data from a distributed sensor network.
 The sensors are Raspberry Pis with custom PCBs. The server doing the collecting
 is a TICK stack with a custom server to handle alerts.
 
-## Rpi Setup
+## Sensor Node Setup
 
 **Make sure the sensor PCB is oriented correctly!**
 
@@ -43,6 +43,10 @@ pm2 startup # follow the prompts
 pm2 start index.js
 pm2 save
 ```
+
+## Sensor Node Configuration
+
+Edit the configuration file in ~/sensorpi-config.toml. Configuration is automatically reloaded, so there's no need to restart the server.
 
 ## Server Setup
 
