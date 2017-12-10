@@ -85,7 +85,7 @@ app.get('/write/:port/:value', (req, res) => {
     port = Number(port)
   }
 
-  if (![0, 1].contains(value)) {
+  if (![0, 1].includes(value)) {
     return res.status(400).send('Please write to port 0 or 1')
   }
 
