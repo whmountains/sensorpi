@@ -1,4 +1,4 @@
-#
+# Sensor Pi
 
 Collect temperature and humidity data from a distributed sensor network.
 
@@ -45,3 +45,21 @@ pm2 save
 ```
 
 ## Server Setup
+
+Edit the list of servers at the end of config/telegraf.conf to list your sensor nodes.
+
+```toml
+[[inputs.httpjson]]
+
+servers = [
+  "http://your-sensor-node:3000/"
+]
+```
+
+Start the server with docker-compose:
+
+```shell
+$ docker-compose up -d
+```
+
+Access the chronograf GUI at localhost:3000.

@@ -43,11 +43,11 @@ async function getCalibratedReading() {
   const [config, reading] = await Promise.all([getConfig(), getReading()])
   lastReading = {
     temperature:
-      reading.temperature * config.temp_coefficient - config.temp_offset,
+      reading.temperature * config.temp_coefficient + config.temp_offset,
     humidity:
-      reading.humidity * config.humidity_coefficient - config.humidity_offset,
+      reading.humidity * config.humidity_coefficient + config.humidity_offset,
     pressure:
-      reading.pressure * config.pressure_coefficient - config.pressure_offset,
+      reading.pressure * config.pressure_coefficient + config.pressure_offset,
   }
 }
 

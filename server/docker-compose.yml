@@ -8,6 +8,7 @@ services:
       - ./config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     links:
       - influxdb
+      - node-helper
     ports:
       - "8092:8092/udp"
       - "8094:8094"
@@ -73,3 +74,5 @@ services:
     build: ./node-helper
     ports:
       - "3000:4000"
+    links:
+      - kapacitor
