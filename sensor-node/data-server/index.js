@@ -28,16 +28,10 @@ const portMap = {
   4: 22,
   5: 18,
   6: 4,
-  vcc: 11,
+  0: 11,
 }
 
-let outputRegister = R.mapObjIndexed((pin, port) => {
-  if (['vcc'].includes(port)) {
-    return 1
-  }
-
-  return 0
-}, portMap)
+let outputRegister = R.map(R.always(0), portMap)
 
 const ports = R.mapObjIndexed((pin, port) => {
   const mode = outputRegister[port] ? 'high' : 'low'
@@ -128,7 +122,7 @@ const defaultConfig = {
   humidity_offset: 0,
   pressure_coefficient: 1,
   pressure_offset: 0,
-  events: [],
+  rules: [],
 }
 
 // read and parse the config file
@@ -150,16 +144,16 @@ function applySetpoints(config, reading) {
   R.forEach(event => {
     let newPortState = !!event.state
 
-    if (event.greaterEqual && reading[event.metric] < event.value) {
+    if (event.greater_equal && reading[event.metric] < event.value) {
       newPortState = !newPortState
     }
 
-    if (event.lessEqual && reading[event.metric] < event.value) {
+    if (event.less_equal && reading[event.metric] > event.value) {
       newPortState = !newPortState
     }
 
     outputRegister[event.port] = Number(newPortState)
-  }, config.events)
+  }, config.rules)
 
   updateOutputs()
 }
