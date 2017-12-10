@@ -41,7 +41,7 @@ http.listen(port, function() {
 // get a calibrated sensor reading
 async function getCalibratedReading() {
   const [config, reading] = await Promise.all([getConfig(), getReading()])
-  lastReading = {
+  return {
     temperature:
       reading.temperature * config.temp_coefficient + config.temp_offset,
     humidity:
