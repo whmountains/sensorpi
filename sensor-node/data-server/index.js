@@ -86,7 +86,7 @@ app.get('/write/:port/:value', (req, res) => {
   }
 
   if (![0, 1].includes(value)) {
-    return res.status(400).send('Please write to port 0 or 1')
+    return res.status(400).send('Please only write 0 or 1')
   }
 
   outputRegister[port] = value
