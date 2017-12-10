@@ -144,10 +144,7 @@ async function getConfig() {
 
   const config = toml.parse(data)
 
-  return {
-    ...defaultConfig,
-    ...config,
-  }
+  return R.mergeDeepRight(defaultConfig, config)
 }
 
 // apply setpoints from the config file
