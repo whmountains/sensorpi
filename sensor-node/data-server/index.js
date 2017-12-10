@@ -7,10 +7,30 @@ const toml = require('toml')
 const fs = require('mz/fs')
 const path = require('path')
 const resolve = require('resolve-dir')
+const { Gpio } = require('onoff')
+const isNumber = require('is-number')
+const R = require('ramda')
 
 const port = process.env.PORT || 3000
 const configPath = resolve('~/sensorpi-config.toml')
-const readInterval = 500
+const readInterval = 1000
+
+const portMap = {
+  1: 23,
+  2: 24,
+  3: 27,
+  4: 22,
+  5: 18,
+  6: 4,
+  vcc: 11,
+}
+
+const ports = R.mapObjIndexed((pin, port) => {
+  return new Gpio(pin, 'out')
+}, portMap)
+
+// vcc is high by default
+ports.vcc.writeSync(1)
 
 // request logging
 app.use(morgan('dev'))
@@ -18,12 +38,21 @@ app.use(morgan('dev'))
 // read the sensor regularly
 let lastReading = {}
 setInterval(async () => {
-  lastReading = await getCalibratedReading()
+  // load the config file
+  const [config, rawReading] = Promise.all([getConfig(), getReading()])
+
+  // get a reading
+  lastReading = getCalibratedReading(config, rawReading)
+
+  // apply setpoints
+  applySetpoints(config, lastReading)
+
+  // output reading
   io.emit('reading', lastReading)
   console.log(lastReading)
 }, readInterval)
 
-// output reading results
+// get last reading
 app.get('/', (req, res) => {
   res.send(lastReading)
 })
@@ -33,14 +62,30 @@ app.get('/live', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 })
 
+// manually change a GPIO
+app.get('/write/:port/:value', (req, res) => {
+  const value = Number(req.params.value)
+  let port = req.params.port
+
+  // cast port to number
+  if (isNumber(port)) {
+    port = Number(port)
+  }
+
+  if (![0, 1].contains(value)) {
+    return res.status(400).send('Please write to port 0 or 1')
+  }
+
+  ports[port].writeSync(value)
+})
+
 // boot the server
 http.listen(port, function() {
   console.log('listening on *:' + port)
 })
 
 // get a calibrated sensor reading
-async function getCalibratedReading() {
-  const [config, reading] = await Promise.all([getConfig(), getReading()])
+function getCalibratedReading(config, reading) {
   return {
     temperature:
       reading.temperature * config.temp_coefficient + config.temp_offset,
@@ -64,6 +109,7 @@ const defaultConfig = {
   humidity_offset: 0,
   pressure_coefficient: 1,
   pressure_offset: 0,
+  events: [],
 }
 
 // read and parse the config file
@@ -78,4 +124,25 @@ async function getConfig() {
     ...defaultConfig,
     ...config,
   }
+}
+
+// apply setpoints from the config file
+async function applySetpoints(config, reading) {
+  const outputRegister = config.events.reduce((register, event) => {
+    let newPortState = !!event.state
+
+    if (event.greaterEqual && reading[event.metric] < event.value) {
+      newPortState = !newPortState
+    }
+
+    if (event.lessEqual && reading[event.metric] < event.value) {
+      newPortState = !newPortState
+    }
+
+    register[event.port] = Number(newPortState)
+  })
+
+  outputRegister.forEach((state, port) => {
+    ports[port].writeSync(state)
+  })
 }
