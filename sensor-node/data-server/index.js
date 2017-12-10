@@ -52,7 +52,7 @@ app.use(morgan('dev'))
 let lastReading = {}
 setInterval(async () => {
   // load the config file
-  const [config, rawReading] = Promise.all([getConfig(), getReading()])
+  const [config, rawReading] = await Promise.all([getConfig(), getReading()])
 
   // get a reading
   lastReading = getCalibratedReading(config, rawReading)
