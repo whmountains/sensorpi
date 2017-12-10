@@ -77,7 +77,7 @@ app.get('/live', function(req, res) {
 
 // manually change a GPIO
 app.get('/write/:port/:value', (req, res) => {
-  const value = Number(req.params.value)
+  const value = Number(!!req.params.value)
   let port = req.params.port
 
   // cast port to number
@@ -89,7 +89,8 @@ app.get('/write/:port/:value', (req, res) => {
     return res.status(400).send('Please write to port 0 or 1')
   }
 
-  ports[port].writeSync(value)
+  outputRegister[port] = value
+  updateOutputs()
 })
 
 // list current port state
