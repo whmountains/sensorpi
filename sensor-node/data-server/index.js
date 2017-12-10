@@ -1,6 +1,6 @@
 const express = require('express')
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
+const Server = require('http').Server
+const socketio = require('socket.io')
 const execa = require('execa')
 const morgan = require('morgan')
 const toml = require('toml')
@@ -17,6 +17,8 @@ const configPath = resolve('~/sensorpi-config.toml')
 const readInterval = 1000
 
 const app = express()
+const http = Server(app)
+const io = socketio(http)
 const log = debug('sensorpi-node')
 
 const portMap = {
