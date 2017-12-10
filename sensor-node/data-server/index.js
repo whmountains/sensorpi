@@ -37,7 +37,7 @@ let outputRegister = R.mapObjIndexed((pin, port) => {
   }
 
   return 0
-})
+}, portMap)
 
 const ports = R.mapObjIndexed((pin, port) => {
   const mode = outputRegister[port] ? 'high' : 'low'
