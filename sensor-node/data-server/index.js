@@ -167,6 +167,7 @@ function applySetpoints(config, reading) {
 // update the outputs
 function updateOutputs() {
   R.forEachObjIndexed((state, port) => {
+    log(`writing ${state} to ${port}`)
     ports[port].writeSync(state)
   }, outputRegister)
 }
