@@ -11,6 +11,19 @@ Install Docker.
 
 ```shell
 curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker pi
+```
+
+Create a swarm if setting up the server
+
+```shell
+docker swarm init
+```
+
+Otherwise join the existing swarm
+
+```
+docker swarm join --token join-token manager:2377
 ```
 
 Clone the repository.
