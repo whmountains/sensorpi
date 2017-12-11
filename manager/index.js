@@ -11,6 +11,8 @@ const { Gpio } = require('onoff')
 const R = require('ramda')
 const debug = require('debug')
 const math = require('mathjs')
+const Redis = require('ioredis')
+const { DateTime } = require('luxon')
 
 const port = process.env.PORT || 3000
 const configPath = resolve('~/sensorpi-config.toml')
@@ -20,6 +22,7 @@ const app = express()
 const http = Server(app)
 const io = socketio(http)
 const log = debug('sensorpi-node')
+const db = new Redis()
 
 const portMap = {
   1: 23,

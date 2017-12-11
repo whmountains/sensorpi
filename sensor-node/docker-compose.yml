@@ -1,11 +1,12 @@
-version: '3'
+version: '3.3'
 
 services:
   # Telegraf collects the data
   telegraf:
     image: telegraf:1.4.0
-    volumes:
-      - ./config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    configs:
+      - source: telegraf
+        target: /etc/telegraf/telegraf.conf
     links:
       - influxdb
       - node-helper
@@ -17,8 +18,6 @@ services:
   # InfluxDB stores the data
   influxdb:
     image: influxdb:1.3.5
-    volumes:
-      - ./data/influxdb:/var/lib/influxdb
     ports:
       - "8086:8086"
 
@@ -40,10 +39,9 @@ services:
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
-    volumes:
-      - ./config/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
-      - ./config/tick-scripts:/etc/kapacitor/load:ro
-      - ./logs:/var/log/
+    configs:
+      - source: kapacitor
+        target: /etc/kapacitor/kapacitor.conf
     links:
       - influxdb
     ports:
@@ -70,9 +68,22 @@ services:
     links:
       - kapacitor
 
-  node-helper:
-    build: ./node-helper
+  # home-grown node process that serves up data
+  # and handles other miscelaneous tasks
+  manager:
+    image: whmountains/sensorpi-manager:1.0.0
+    volumes:
+      - /sys:/sys
+      - ~/.config/sensorpi/device_config.toml:~/.config/sensorpi/device_config.toml
     ports:
       - "3000:4000"
     links:
       - kapacitor
+
+# configuration files
+
+configs:
+  kapacitor:
+    file: ./config/kapacitor.conf
+  telegraf:
+    file: ./config/telegraf.conf

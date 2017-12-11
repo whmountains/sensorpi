@@ -1,0 +1,24 @@
+{
+  "name": "sensorpi-manager",
+  "version": "0.0.1",
+  "description": "Node utilities for sensorpi",
+  "licence": "AGPL-3.0",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "execa": "^0.8.0",
+    "express": "^4.15.2",
+    "ioredis": "^3.2.2",
+    "luxon": "^0.2.7",
+    "mathjs": "^3.17.0",
+    "morgan": "^1.9.0",
+    "mz": "^2.7.0",
+    "onoff": "^1.1.8",
+    "ramda": "^0.25.0",
+    "resolve-dir": "^1.0.1",
+    "socket.io": "^1.7.3",
+    "toml": "^2.3.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

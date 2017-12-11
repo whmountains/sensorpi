@@ -5,6 +5,44 @@ Collect temperature and humidity data from a distributed sensor network.
 The sensors are Raspberry Pis with custom PCBs. The server doing the collecting
 is a TICK stack with a custom server to handle alerts.
 
+## Installation Checklist
+
+Install Docker.
+
+```shell
+curl -sSL https://get.docker.com | sh
+```
+
+Clone the repository.
+
+```shell
+git clone https://github.com/whmountains/sensorpi.git
+```
+
+Copy the configuration template files:
+
+```shell
+mkdir -p ~/.config/sensorpi
+cp -r sensorpi/config-example/* ~/.config/sensorpi
+```
+
+Start the server
+
+```shell
+cd sensorpi
+docker-compose up
+```
+
+Try visiting http://server-ip:8888. Did it work? Hit Ctrl-C to shut it down when you're done.
+
+Now you're ready to deploy to a docker swarm. These instructions assume a fresh install of docker. Obviously you don't need to re-init a swarm if you're already part of one.
+
+````shell
+docker swarm init
+docker stack deploy
+
+## Extra setup steps for Raspberry Pi
+
 ## Sensor Node
 
 ## First-run Setup
@@ -17,6 +55,12 @@ required.
 Node server runs on port 3000.
 
 ```shell
+# Set the timezone
+sudo raspi-config
+
+# install the NTP client
+sudo apt install ntp
+
 # Clone repo
 git clone https://github.com/whmountains/sensorpi.git
 cd sensorpi/sensor-node
@@ -44,7 +88,7 @@ pm2 startup # follow the prompts
 # Start the Node.js server
 pm2 start index.js
 pm2 save
-```
+````
 
 ### Configuration
 
