@@ -29,7 +29,7 @@ git clone https://github.com/whmountains/sensorpi.git
 Deploy the sensorpi stack:
 
 ```shell
-docker stack deploy --compose-file docker-compose.yml sensorpi
+docker stack deploy --compose-file docker-compose.yml --prune sensorpi
 ```
 
 You can watch deploy progress with `docker service ls`

@@ -20,7 +20,7 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - ./data/influxdb:/var/lib/influxdb
+      - /var/lib/sensorpi/data/influxdb:/var/lib/influxdb
     deploy:
       mode: global
 
@@ -76,7 +76,7 @@ services:
     image: whmountains/sensorpi-manager:1.0.0
     volumes:
       - /sys:/sys
-      - ~/.config/sensorpi/device_config.toml:~/.config/sensorpi/device_config.toml
+      - /sensorpi/config/device_config.toml:/etc/sensorpi/device_config.toml
     ports:
       - "3000:4000"
     deploy:
