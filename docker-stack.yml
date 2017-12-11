@@ -20,7 +20,7 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - /var/lib/sensorpi/data/influxdb:/var/lib/influxdb
+      - db-data:/var/lib/influxdb
     deploy:
       mode: global
 
@@ -49,36 +49,15 @@ services:
     deploy:
       mode: global
 
-  # Define a service for using the influx CLI tool.
-  # docker-compose run influxdb-cli
-  # influxdb-cli:
-  #   image: influxdb:1.3.5
-  #   entrypoint:
-  #     - influx
-  #     - -host
-  #     - influxdb
-  #   deploy:
-  #     mode: global
-
-  # Define a service for using the kapacitor CLI tool.
-  # docker-compose run kapacitor-cli
-  # kapacitor-cli:
-  #   image: kapacitor:1.3.3
-  #   entrypoint: bash
-  #   environment:
-  #     KAPACITOR_URL: http://kapacitor:9092
-  #   deploy:
-  #     mode: global
-
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
   manager:
-    image: whmountains/sensorpi-manager:1.0.0
+    image: whmountains/sensorpi-manager:1.1.0
     volumes:
       - /sys:/sys
-      - /sensorpi/config/device_config.toml:/etc/sensorpi/device_config.toml
+      - manager-config:/sensorpi/config/device_config.toml
     ports:
-      - "3000:4000"
+      - "3000:80"
     deploy:
       mode: global
 
@@ -89,3 +68,7 @@ configs:
     file: ./config/kapacitor.conf
   telegraf:
     file: ./config/telegraf.conf
+
+volumes:
+  manager-config:
+  db-data:

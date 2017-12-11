@@ -11,17 +11,16 @@ const { Gpio } = require('onoff')
 const R = require('ramda')
 const debug = require('debug')
 const math = require('mathjs')
-const Redis = require('ioredis')
-const { DateTime } = require('luxon')
+const debounce = require('debounce')
 
 const port = process.env.PORT || 3000
-const configPath = resolve('~/sensorpi-config.toml')
-const readInterval = 1000
+const configPath = resolve('/sensorpi/config/device_config.toml')
+const readInterval = 100
 
 const app = express()
 const http = Server(app)
 const io = socketio(http)
-const log = debug('sensorpi-node')
+const log = debug('sensorpi-manager')
 const db = new Redis()
 
 const portMap = {
@@ -41,6 +40,9 @@ const ports = R.mapObjIndexed((pin, port) => {
 
   return new Gpio(pin, mode)
 }, portMap)
+
+// string containing the configuration in toml format
+const userConfig = null
 
 // request logging
 app.use(morgan('dev'))
@@ -62,8 +64,25 @@ setInterval(async () => {
   log(lastReading)
 }, readInterval)
 
+// handle socket events
+
+io.on('connect', socket => {
+  log('New socket connection!')
+
+  socket.on('disconnect', 'A client disconnected.')
+
+  socket.on('getConfig', async cb => {
+    cb(await loadConfig())
+  })
+
+  socket.on('updateConfig', async newConfig => {
+    userConfig = newConfig
+    saveConfig()
+  })
+})
+
 // get last reading
-app.get('/', (req, res) => {
+app.get('/data', (req, res) => {
   res.send(lastReading)
 })
 
@@ -94,6 +113,8 @@ app.get('/write/:port/:value', (req, res) => {
 app.get('/port-state', (req, res) => {
   res.send(outputRegister)
 })
+
+app.use(express.static(path.join(__dirname, 'build')))
 
 // boot the server
 http.listen(port, function() {
@@ -141,14 +162,37 @@ const defaultConfig = {
 
 // read and parse the config file
 async function getConfig() {
-  const data = await fs.readFile(configPath, {
-    encoding: 'utf8',
-  })
+  const configFile = await loadConfig()
 
-  const config = toml.parse(data)
+  const config = toml.parse(configFile)
 
   return R.mergeDeepRight(defaultConfig, config)
 }
+
+async function loadConfig() {
+  if (userConfig !== null) {
+    return userConfig
+  }
+
+  try {
+    userConfig = await fs.readFile(configPath, {
+      encoding: 'utf8',
+    })
+  } catch (e) {
+    log('first run, falling back to default config file')
+
+    userConfig = await fs.readFile(
+      path.join(__dirname, 'device_config.example.toml'),
+      { encoding: 'utf8' },
+    )
+  }
+
+  return userConfig
+}
+
+const saveConfig = debounce(async () => {
+  return await fs.writeFile(configPath, userConfig)
+}, 1000)
 
 // apply setpoints from the config file
 function applySetpoints(config, reading) {

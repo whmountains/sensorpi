@@ -20,10 +20,12 @@ Create a new docker swarm if setting up the server
 docker swarm init
 ```
 
-Clone the repository.
+Clone the repository and run the setup script
 
 ```shell
 git clone https://github.com/whmountains/sensorpi.git
+cd sensorpi
+sudo ./setup.sh
 ```
 
 Deploy the sensorpi stack:

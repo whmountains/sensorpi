@@ -4,15 +4,17 @@ FROM node:9.2
 WORKDIR /usr/src/app
 
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package.json ./
 COPY yarn.lock ./
-
-RUN yarn install --production
+RUN yarn install
 
 # Bundle app source
 COPY . .
+
+# Build the web ui
+RUN yarn build
+
+ENV DEBUG=sensorpi-manager:*
 
 EXPOSE 3000
 CMD [ "yarn", "start" ]
