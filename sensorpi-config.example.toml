@@ -1,0 +1,28 @@
+[summary]
+# send out summary emails to these addresses
+emails = ["caleb@whiting.io"]
+
+# when to send the emails (using cron format)
+schedule = "* * 21 * *"
+
+[calibration.temperature]
+coefficient = 1
+offset = -13
+
+[calibration.humidity]
+coefficient = 1
+offset = 0
+
+# example rule to always keep port 1 on
+[[rules]]
+outputs = {1 = 1}
+
+# example rule to enable port 2 when temperature rises above 22C
+[[rules]]
+condition = "temperature > 26"
+outputs = {2 = 1}
+
+# now disable port 2 when the temperature goes down
+[[rules]]
+condition = "temperature < 25"
+outputs = {2 = 0}

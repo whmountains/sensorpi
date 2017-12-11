@@ -12,6 +12,7 @@
     "mathjs": "^3.17.0",
     "morgan": "^1.9.0",
     "mz": "^2.7.0",
+    "node-schedule": "^1.2.5",
     "onoff": "^1.1.8",
     "ramda": "^0.25.0",
     "resolve-dir": "^1.0.1",
