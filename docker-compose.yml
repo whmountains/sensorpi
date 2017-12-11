@@ -50,24 +50,24 @@ services:
 
   # Define a service for using the influx CLI tool.
   # docker-compose run influxdb-cli
-  influxdb-cli:
-    image: influxdb:1.3.5
-    entrypoint:
-      - influx
-      - -host
-      - influxdb
-    deploy:
-      mode: global
+  # influxdb-cli:
+  #   image: influxdb:1.3.5
+  #   entrypoint:
+  #     - influx
+  #     - -host
+  #     - influxdb
+  #   deploy:
+  #     mode: global
 
   # Define a service for using the kapacitor CLI tool.
   # docker-compose run kapacitor-cli
-  kapacitor-cli:
-    image: kapacitor:1.3.3
-    entrypoint: bash
-    environment:
-      KAPACITOR_URL: http://kapacitor:9092
-    deploy:
-      mode: global
+  # kapacitor-cli:
+  #   image: kapacitor:1.3.3
+  #   entrypoint: bash
+  #   environment:
+  #     KAPACITOR_URL: http://kapacitor:9092
+  #   deploy:
+  #     mode: global
 
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
