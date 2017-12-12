@@ -10,3 +10,5 @@ const telegrafWrite = reading => {
 
   socket.send(message, telegrafPort, telegraf)
 }
+
+module.exports = { telegrafWrite }
