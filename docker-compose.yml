@@ -4,13 +4,15 @@ services:
   # Telegraf collects the data
   telegraf:
     image: telegraf:1.4.0
-    volumes:
+    configs:
       - ./config/telegraf.conf:/etc/telegraf/telegraf.conf
     ports:
       - "8092:8092/udp"
       - "8094:8094"
       - "8125:8125/udp"
-    restart: always
+    networks:
+      - hostnet
+    # restart: always
 
   # InfluxDB stores the data
   influxdb:
@@ -18,8 +20,10 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - db-data:/var/lib/influxdb
-    restart: always
+      - influxdb-data:/var/lib/influxdb
+    networks:
+      - hostnet
+    # restart: always
 
   # Chronograf is the GUI to view the data
   chronograf:
@@ -29,7 +33,11 @@ services:
       KAPACITOR_URL: http://kapacitor:9092
     ports:
       - "8888:8888"
-    restart: always
+    volumes:
+      - chronograf-data:/var/lib/chronograf
+    networks:
+      - hostnet
+    # restart: always
 
   # Kapacitor is the alerting engine
   kapacitor:
@@ -37,24 +45,37 @@ services:
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
-    volumes:
+    configs:
       - ./config/kapacitor.conf:/etc/kapacitor/kapacitor.conf
     ports:
       - "9092:9092"
-    restart: always
+     volumes:
+      - kapacitor-data:/var/lib/kapacitor
+    networks:
+      - hostnet
+    # restart: always
 
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
   manager:
-    image: sensorpi-manager-local
+    image: whmountinas/sensorpi-manager:latest
     volumes:
       - /sys:/sys
-      - ~/sensorpi_config.toml:/sensorpi/config/device_config.toml
+      - sensorpi-manager-data
     ports:
       - "80:3000"
-    restart: always
+    # restart: always
+  networks:
+    - hostnet
 
 volumes:
   influxdb-data:
   chronograf-data:
   kapacitor-data:
+  sensorpi-manager-data:
+
+networks:
+  hostnet:
+    driver: bridge
+    external:
+      name: host
