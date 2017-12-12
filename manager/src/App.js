@@ -31,7 +31,7 @@ class App extends Component {
   }
   componentDidMount() {
     this.socket = io()
-    this.socket.on('reading', function(reading) {
+    this.socket.on('reading', reading => {
       this.setState({ reading })
     })
 

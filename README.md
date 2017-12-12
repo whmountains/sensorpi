@@ -70,6 +70,9 @@ source ~/.profile
 cd manager
 yarn install
 
+# build the web ui
+yarn build
+
 # Install PM2
 yarn global add pm2
 pm2 startup # follow the prompts
