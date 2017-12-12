@@ -2,6 +2,7 @@ const toml = require('toml')
 const debounce = require('lodash.debounce')
 const fs = require('mz/fs')
 const resolve = require('resolve-dir')
+const R = require('ramda')
 
 const readConfigInterval = 1000
 const configPath = resolve('~/sensorpi_config.toml')
