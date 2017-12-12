@@ -5,7 +5,7 @@ services:
   telegraf:
     image: telegraf:1.4.0
     volumes:
-      - ./config/telegraf.conf:/etc/kapacitor/telegraf.conf
+      - ./config/telegraf.conf:/etc/telegraf/telegraf.conf
     ports:
       - "8092:8092/udp"
       - "8094:8094"
@@ -46,7 +46,7 @@ services:
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
   manager:
-    build: ./manager
+    image: sensorpi-manager-local
     volumes:
       - /sys:/sys
       - ~/sensorpi_config.toml:/sensorpi/config/device_config.toml
@@ -55,4 +55,6 @@ services:
     restart: always
 
 volumes:
-  db-data:
+  influxdb-data:
+  chronograf-data:
+  kapacitor-data:
