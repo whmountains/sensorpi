@@ -45,7 +45,7 @@ sudo apt update
 sudo apt install influxdb chronograf telegraf kapacitor -y
 
 # copy config files (kapacitor.conf is *not* needed)
-sudo cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
+cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
 sudo cp config-examples/telegraf.conf /etc/telegraf/telegraf.conf
 
 # give the 'pi' user permission to write to the socket
