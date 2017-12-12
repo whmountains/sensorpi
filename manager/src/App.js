@@ -32,7 +32,7 @@ class App extends Component {
   componentDidMount() {
     this.socket = io()
     this.socket.on('reading', reading => {
-      this.setState({ reading })
+      this.setState({ reading: R.map(r => r.toFixed(2), reading) })
     })
 
     this.socket.on('config', config => {
