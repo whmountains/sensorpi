@@ -8,7 +8,7 @@ const socket = dgram.createSocket('udp4')
 const telegrafWrite = reading => {
   const message = JSON.stringify(reading)
 
-  socket.send(message, telegrafPort, telegraf)
+  socket.send(message, telegrafPort, telegrafHost)
 }
 
 module.exports = { telegrafWrite }
