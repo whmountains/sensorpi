@@ -34,7 +34,8 @@ Deploy the sensorpi stack:
 docker stack deploy --compose-file docker-stack.yml --prune sensorpido
 ```
 
-You can watch deploy progress with `docker service ls`
+You can watch deploy progress with `docker service ls`.
+You can view status of individual nodes with `docker node ps [node-id]`
 
 ## Sensor Node Installation
 
