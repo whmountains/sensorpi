@@ -36,7 +36,7 @@ class App extends Component {
     })
 
     this.socket.emit('getConfig', config => {
-      this.state.config = config
+      this.setState({ config })
     })
   }
   handleEditorChange = (editor, data, value) => {

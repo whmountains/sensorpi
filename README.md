@@ -31,7 +31,7 @@ sudo ./setup.sh
 Deploy the sensorpi stack:
 
 ```shell
-docker stack deploy --compose-file docker-compose.yml --prune sensorpi
+docker stack deploy --compose-file docker-stack.yml --prune sensorpido
 ```
 
 You can watch deploy progress with `docker service ls`
@@ -50,7 +50,7 @@ sudo usermod -aG docker pi
 Join the swarm, using the tokens you got when setting up the manager
 
 ```shell
-docker swarm join --token join-token manager:2377
+docker swarm join --token join-token manager-ip:2377
 ```
 
 One last step: make sure the time is correct.
