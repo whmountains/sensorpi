@@ -1,15 +1,4 @@
-const BME280 = require('bme280-sensor')
 const execa = require('execa')
-
-const bme280 = new BME280({
-  i2cBusNo: 1,
-  i2cAddress: BME280.BME280_DEFAULT_I2C_ADDRESS(),
-})
-
-bme280
-  .init()
-  .then(() => console.log('successfully initialized sensor'))
-  .catch(e => console.log('error initializing sensor', e))
 
 // get a calibrated sensor reading
 function getCalibratedReading(config, reading) {
@@ -28,12 +17,7 @@ function getCalibratedReading(config, reading) {
 
 // get a raw, uncalibrated reading
 async function getReading() {
-  const reading = await bme280.readSensorData()
-  return {
-    temperature: reading.temperature_C,
-    pressure: reading.pressure_hPa,
-    humidity: reading.humidity,
-  }
+  return JSON.parse(await execa('bme280'))
 }
 
 module.exports = { getCalibratedReading, getReading }

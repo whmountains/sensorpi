@@ -26,7 +26,15 @@ sudo apt upgrade
 # install NTP
 sudo apt install ntp
 
-# Clone repo
+# install the BME280 driver
+sudo apt-get install libi2c-dev i2c-tools wiringpi -y
+git clone https://github.com/andreiva/raspberry-pi-bme280.git
+cd raspberry-pi-bme280
+make
+sudo cp bme280 /usr/bin
+cd ..
+
+# Clone main repo
 git clone https://github.com/whmountains/sensorpi.git
 cd sprinkler
 
