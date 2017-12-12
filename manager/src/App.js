@@ -48,7 +48,7 @@ class App extends Component {
       <div>
         <h1>Sensor Pi</h1>
         <p>
-          This page shows live data. Visit{' '}
+          This page shows live data and configuration. Visit{' '}
           <a
             href={
               window.location.protocol +
@@ -57,10 +57,12 @@ class App extends Component {
               ':8888/'
             }
           >
-            Chronograf on port 8888
+            {window.location.protocol +
+              '//' +
+              window.location.hostname +
+              ':8888/'}
           </a>{' '}
-          to view historical data recorded on this Pi. Visit Chronograf on the
-          master server to view aggregate data from all sensor nodes.
+          to view historical data recorded on this Pi.
         </p>
         <h2>Live Data</h2>
         <p>
