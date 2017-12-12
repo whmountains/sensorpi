@@ -1,6 +1,6 @@
 const net = require('net')
 
-const socketPath = '/tmp/telegraf.sock'
+const socketPath = '/home/pi/telegraf_input.sock'
 
 const socket = net.createConnection(socketPath)
 
