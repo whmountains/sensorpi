@@ -51,7 +51,7 @@ services:
     image: whmountinas/sensorpi-manager:latest
     volumes:
       - /sys:/sys
-      - sensorpi-manager-data
+      - sensorpi-manager-data:/
     ports:
       - "80:3000"
 

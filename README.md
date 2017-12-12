@@ -5,54 +5,47 @@ Collect temperature and humidity data from a distributed sensor network.
 The sensors are Raspberry Pis with custom PCBs. The server doing the collecting
 is a TICK stack with a custom server to handle alerts.
 
-## Installagion
+## Raspberry Pi Installation
 
-Install Docker and docker-compose
-
-```shell
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker pi
-sudo pip install docker-compose
-```
-
-Clone the repository
+Tested on Raspberian Stretch
 
 ```shell
-git clone https://github.com/whmountains/sensorpi.git
-cd sensorpi
+# Clone repo
+git clone https://gitlab.com/szaver/sprinkler.git
+cd sprinkler
+
+# copy config files (kapacitor.conf is *not* needed)
+cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
+cp config-examples/telegraf.conf /etc/kapacitor/telegraf.conf
+
+# install Node (the Pi's version of Node.JS is terribly out of date)
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+source ~/.profile # reload the updated $PATH so NVM will be available immediately
+nvm install node
+
+# install Yarn
+curl -o- -L https://yarnpkg.com/install.sh | bash
+source ~/.profile
+
+# install TICK stack
+curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt update
+sudo apt install influxdb chronograf telegraf kapacitor -y
+sudo systemctl start influxdb
+sudo systemctl start chronograf
+sudo systemctl start telegraf
+sudo systemctl start kapacitor
+
+# Install Node dependencies
+cd manager
+yarn install
+
+# Install PM2
+yarn global add pm2
+pm2 startup # follow the prompts
+
+# Start the Node.js server
+pm2 start dist/controller.js --watch
+pm2 save
 ```
-
-Start the stack
-
-```shell
-docker-compose up -d
-```
-
-You're done!
-
-## Sensor Node Installation
-
-Start by plugging the sensor PCB into the Pi. **Make sure it's oriented correctly!**
-
-Install Docker.
-
-```shell
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker pi
-```
-
-Join the swarm, using the tokens you got when setting up the manager
-
-One last step: make sure the time is correct.
-
-```shell
-# Set the timezone and enable i2c
-sudo raspi-config
-
-# install the NTP client
-sudo apt install ntp
-```
-
-### Configuration
-
-Create a file named `sensorpi-config.toml` in the home directory. You'll find an example in the repo.

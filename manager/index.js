@@ -3,7 +3,6 @@ const Server = require('http').Server
 const socketio = require('socket.io')
 const morgan = require('morgan')
 const path = require('path')
-const resolve = require('resolve-dir')
 const R = require('ramda')
 const debug = require('debug')
 const math = require('mathjs')
@@ -16,7 +15,6 @@ const { telegrafWrite } = require('./telegraf')
 // configuration ==============
 
 const port = process.env.PORT || 3000
-const configPath = resolve('~/device_config.toml')
 const readSensorInterval = 100
 
 // bootstrap ==============
