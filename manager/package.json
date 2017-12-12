@@ -1,6 +1,6 @@
 {
   "name": "sensorpi-manager",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Node utilities for sensorpi",
   "license": "AGPL-3.0",
   "dependencies": {
