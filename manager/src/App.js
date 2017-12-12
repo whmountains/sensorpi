@@ -35,7 +35,7 @@ class App extends Component {
       this.setState({ reading })
     })
 
-    this.socket.emit('getConfig', config => {
+    this.socket.on('config', config => {
       this.setState({ config })
     })
   }

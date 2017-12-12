@@ -7,7 +7,7 @@ const R = require('ramda')
 const debug = require('debug')
 const math = require('mathjs')
 
-const { getConfig } = require('./config')
+const { getConfig, loadConfig, writeConfig } = require('./config')
 const { getReading, getCalibratedReading } = require('./sensor')
 const { writePort, writePorts, getOutputRegister } = require('./gpio')
 const { telegrafWrite } = require('./telegraf')
@@ -38,6 +38,16 @@ setInterval(async () => {
   // output reading to telegraf
   telegrafWrite(reading)
 }, readSensorInterval)
+
+// socket communication
+io.on('connection', async socket => {
+  console.log('A client connected!')
+  socket.emit('config', await loadConfig())
+
+  socket.on('updateConfig', newConfig => writeConfig(newConfig))
+
+  socket.on('disconnect', () => console.log('A client disconnected.'))
+})
 
 // get last reading
 app.get('/data', async (req, res) => {

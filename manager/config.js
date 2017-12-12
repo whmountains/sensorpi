@@ -4,8 +4,9 @@ const fs = require('mz/fs')
 const resolve = require('resolve-dir')
 const R = require('ramda')
 
-const readConfigInterval = 1000
 const configPath = resolve('~/sensorpi_config.toml')
+const writeConfigDelay = 1000
+const writeConfigMaxWait = 5000
 
 const defaultConfig = {
   calibration: {
@@ -34,14 +35,25 @@ async function getConfig() {
   return R.mergeDeepRight(defaultConfig, config)
 }
 
-const loadConfig = debounce(
-  () => {
-    return fs.readFile(configPath, {
-      encoding: 'utf8',
-    })
+let configCache = ''
+
+const loadConfig = () => {
+  if (configCache) {
+    return Promise.resolve(configCache)
+  }
+
+  return fs.readFile(configPath, {
+    encoding: 'utf8',
+  })
+}
+
+const writeConfig = debounce(
+  contents => {
+    configCache = contents
+    return fs.writeFile(configPath, contents)
   },
-  readConfigInterval,
-  { leading: true },
+  writeConfigDelay,
+  { maxWait: writeConfigMaxWait },
 )
 
 module.exports = { getConfig, loadConfig }
