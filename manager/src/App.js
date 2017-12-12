@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Controlled as CodeMirror } from 'react-codemirror2'
-import { mapObjIndexed } from 'ramda'
+import { mapObjIndexed, map } from 'ramda'
 import capitalize from 'capitalize'
 import io from 'socket.io-client'
 
@@ -32,7 +32,7 @@ class App extends Component {
   componentDidMount() {
     this.socket = io()
     this.socket.on('reading', reading => {
-      this.setState({ reading: R.map(r => r.toFixed(2), reading) })
+      this.setState({ reading: map(r => r.toFixed(2), reading) })
     })
 
     this.socket.on('config', config => {
