@@ -11,7 +11,7 @@ const portMap = {
   4: 22,
   5: 18,
   6: 4,
-  0: 11,
+  7: 11,
 }
 
 // this holds the port state

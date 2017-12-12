@@ -68,7 +68,7 @@ app.get('/write/:port/:value', (req, res) => {
 
   res.send({
     status: 'success',
-    portState: outputRegister,
+    portState: getOutputRegister(),
   })
 })
 
