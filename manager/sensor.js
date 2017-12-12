@@ -6,7 +6,10 @@ const bme280 = new BME280({
   i2cAddress: BME280.BME280_DEFAULT_I2C_ADDRESS(),
 })
 
-bme280.init()
+bme280
+  .init()
+  .then(() => console.log('successfully initialized sensor'))
+  .catch(e => console.log('error initializing sensor', e))
 
 // get a calibrated sensor reading
 function getCalibratedReading(config, reading) {
