@@ -17,7 +17,8 @@ function getCalibratedReading(config, reading) {
 
 // get a raw, uncalibrated reading
 async function getReading() {
-  return JSON.parse(await execa('bme280'))
+  const { stdout } = await execa('bme280')
+  return JSON.parse(stdout)
 }
 
 module.exports = { getCalibratedReading, getReading }
