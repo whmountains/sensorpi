@@ -46,6 +46,6 @@ yarn global add pm2
 pm2 startup # follow the prompts
 
 # Start the Node.js server
-pm2 start dist/controller.js --watch
+pm2 start index.js --watch
 pm2 save
 ```
