@@ -1,12 +1,11 @@
-const dgram = require('dgram')
+const net = require('net')
 
-const telegrafHost = 'telegraf'
-const telegrafPort = 8094
+const socketPath = '/tmp/telegraf.sock'
 
-const socket = dgram.createSocket('udp4')
+const socket = net.createConnection(socketPath)
 
 const telegrafWrite = reading => {
   const message = JSON.stringify(reading)
 
-  socket.send(message, telegrafPort, telegrafHost)
+  socket.write(message)
 }
