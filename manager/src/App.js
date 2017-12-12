@@ -40,7 +40,7 @@ class App extends Component {
     })
   }
   handleEditorChange = (editor, data, value) => {
-    this.setState({ value })
+    this.setState({ config: value })
     this.socket.emit('updateConfig', value)
   }
   render() {
