@@ -56,4 +56,4 @@ const writeConfig = debounce(
   { maxWait: writeConfigMaxWait },
 )
 
-module.exports = { getConfig, loadConfig }
+module.exports = { getConfig, loadConfig, writeConfig }
