@@ -4,10 +4,12 @@
   "description": "Node utilities for sensorpi",
   "license": "AGPL-3.0",
   "dependencies": {
+    "bme280-sensor": "^0.1.6",
     "debug": "^3.1.0",
     "execa": "^0.8.0",
     "express": "^4.15.2",
     "ioredis": "^3.2.2",
+    "lodash.debounce": "^4.0.8",
     "luxon": "^0.2.7",
     "mathjs": "^3.17.0",
     "morgan": "^1.9.0",

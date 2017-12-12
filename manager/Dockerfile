@@ -8,11 +8,12 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
 
-# Bundle app source
-COPY . .
-
-# Build the web ui
+# Bundle web ui
+COPY ./src ./src
+COPY ./public ./public
 RUN yarn build
+
+COPY . .
 
 ENV DEBUG=sensorpi-manager:*
 

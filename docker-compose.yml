@@ -4,15 +4,13 @@ services:
   # Telegraf collects the data
   telegraf:
     image: telegraf:1.4.0
-    configs:
-      - source: telegraf
-        target: /etc/telegraf/telegraf.conf
+    volumes:
+      - ./config/telegraf.conf:/etc/kapacitor/telegraf.conf
     ports:
       - "8092:8092/udp"
       - "8094:8094"
       - "8125:8125/udp"
-    deploy:
-      mode: global
+    restart: always
 
   # InfluxDB stores the data
   influxdb:
@@ -21,8 +19,7 @@ services:
       - "8086:8086"
     volumes:
       - db-data:/var/lib/influxdb
-    deploy:
-      mode: global
+    restart: always
 
   # Chronograf is the GUI to view the data
   chronograf:
@@ -32,8 +29,7 @@ services:
       KAPACITOR_URL: http://kapacitor:9092
     ports:
       - "8888:8888"
-    deploy:
-      mode: global
+    restart: always
 
   # Kapacitor is the alerting engine
   kapacitor:
@@ -41,34 +37,22 @@ services:
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
-    configs:
-      - source: kapacitor
-        target: /etc/kapacitor/kapacitor.conf
+    volumes:
+      - ./config/kapacitor.conf:/etc/kapacitor/kapacitor.conf
     ports:
       - "9092:9092"
-    deploy:
-      mode: global
+    restart: always
 
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
   manager:
-    image: whmountains/sensorpi-manager:1.1.0
+    build: ./manager
     volumes:
       - /sys:/sys
-      - manager-config:/sensorpi/config/device_config.toml
+      - ~/sensorpi_config.toml:/sensorpi/config/device_config.toml
     ports:
-      - "3000:80"
-    deploy:
-      mode: global
-
-# configuration files
-
-configs:
-  kapacitor:
-    file: ./config/kapacitor.conf
-  telegraf:
-    file: ./config/telegraf.conf
+      - "80:3000"
+    restart: always
 
 volumes:
-  manager-config:
   db-data:

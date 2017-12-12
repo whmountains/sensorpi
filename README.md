@@ -50,14 +50,10 @@ sudo usermod -aG docker pi
 
 Join the swarm, using the tokens you got when setting up the manager
 
-```shell
-docker swarm join --token join-token manager-ip:2377
-```
-
 One last step: make sure the time is correct.
 
 ```shell
-# Set the timezone
+# Set the timezone and enable i2c
 sudo raspi-config
 
 # install the NTP client
