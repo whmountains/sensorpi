@@ -34,6 +34,9 @@ sudo apt install influxdb chronograf telegraf kapacitor -y
 sudo cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
 sudo cp config-examples/telegraf.conf /etc/telegraf/telegraf.conf
 
+# give the 'pi' user permission to write to the socket
+sudo usermod -a -G telegraf pi
+
 # start the TICK stack
 sudo systemctl start influxdb
 sudo systemctl start chronograf
