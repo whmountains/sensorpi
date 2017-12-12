@@ -74,7 +74,7 @@ app.get('/write/:port/:value', (req, res) => {
 
 // list current port state
 app.get('/port-state', (req, res) => {
-  res.send(getPortState())
+  res.send(getOutputRegister())
 })
 
 // show the UI
