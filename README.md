@@ -11,12 +11,12 @@ Tested on Raspberian Stretch
 
 ```shell
 # Clone repo
-git clone https://gitlab.com/szaver/sprinkler.git
+git clone https://github.com/whmountains/sensorpi.git
 cd sprinkler
 
 # copy config files (kapacitor.conf is *not* needed)
-cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
-cp config-examples/telegraf.conf /etc/kapacitor/telegraf.conf
+sudo cp config-examples/sensorpi_config.toml ~/sensorpi_config.toml
+sudo cp config-examples/telegraf.conf /etc/kapacitor/telegraf.conf
 
 # install Node (the Pi's version of Node.JS is terribly out of date)
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
