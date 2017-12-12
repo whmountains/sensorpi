@@ -5,14 +5,12 @@ services:
   telegraf:
     image: telegraf:1.4.0
     configs:
-      - ./config/telegraf.conf:/etc/telegraf/telegraf.conf
+      - source: telegraf
+        target: /etc/telegraf/telegraf.conf
     ports:
       - "8092:8092/udp"
       - "8094:8094"
       - "8125:8125/udp"
-    networks:
-      - hostnet
-    # restart: always
 
   # InfluxDB stores the data
   influxdb:
@@ -21,9 +19,6 @@ services:
       - "8086:8086"
     volumes:
       - influxdb-data:/var/lib/influxdb
-    networks:
-      - hostnet
-    # restart: always
 
   # Chronograf is the GUI to view the data
   chronograf:
@@ -35,9 +30,6 @@ services:
       - "8888:8888"
     volumes:
       - chronograf-data:/var/lib/chronograf
-    networks:
-      - hostnet
-    # restart: always
 
   # Kapacitor is the alerting engine
   kapacitor:
@@ -46,14 +38,12 @@ services:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
     configs:
-      - ./config/kapacitor.conf:/etc/kapacitor/kapacitor.conf
+      - source: kapacitor
+        target: /etc/kapacitor/kapacitor.conf
     ports:
       - "9092:9092"
-     volumes:
+    volumes:
       - kapacitor-data:/var/lib/kapacitor
-    networks:
-      - hostnet
-    # restart: always
 
   # home-grown node process that serves up data
   # and handles other miscelaneous tasks
@@ -64,9 +54,6 @@ services:
       - sensorpi-manager-data
     ports:
       - "80:3000"
-    # restart: always
-  networks:
-    - hostnet
 
 volumes:
   influxdb-data:
@@ -74,8 +61,8 @@ volumes:
   kapacitor-data:
   sensorpi-manager-data:
 
-networks:
-  hostnet:
-    driver: bridge
-    external:
-      name: host
+configs:
+  telegraf:
+    file: ./config/telegraf.conf
+  kapacitor:
+    file: ./config/kapacitor.conf
