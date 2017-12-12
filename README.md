@@ -7,15 +7,21 @@ is a TICK stack with a custom server to handle alerts.
 
 ## Raspberry Pi Installation
 
-Tested on Raspberian Stretch
+Tested on Raspberian Stretch.
+
+The first step is to boot to the desktop and do some basic setup. Open the configuration GUI at Pi -> Preferences -> Raspberry Pi Configuration.
+
+* Enable SSH and I2C under the interfaces tab
+* Set the correct timezone under teh locale
+
+You'll also want to connect to a wifi network unless you're using Ethernet. Reboot once you're done.
+
+The rest of the setup can be completed via SSH or the built-in terminal.
 
 ```shell
 # Update everything
 sudo apt update
 sudo apt upgrade
-
-# Set the correct time zone
-sudo raspi-config
 
 # install NTP
 sudo apt install ntp
