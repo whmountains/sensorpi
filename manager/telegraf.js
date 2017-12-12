@@ -1,6 +1,6 @@
 const dgram = require('dgram')
 
-const telegrafHost = 'telegraf'
+const telegrafHost = 'localhost'
 const telegrafPort = 8094
 
 const socket = dgram.createSocket('udp4')
