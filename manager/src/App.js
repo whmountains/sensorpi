@@ -112,6 +112,7 @@ class App extends Component {
           <ObjectTable
             keyHeader="Reading"
             valueHeader="Value"
+            valueTransform={(v, k) => `${v} ${unitStrings[k]}`}
             data={this.state.reading}
           />
         </p>
@@ -120,6 +121,7 @@ class App extends Component {
             keyHeader="Port"
             valueHeader="Value"
             data={this.state.portState}
+            valueTransform={v => (!v ? 'off' : 'on')}
           />
         </p>
         <h2>Configuration</h2>
