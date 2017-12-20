@@ -34,7 +34,7 @@ const writePort = (port, value) => {
 const writePorts = portValueMap => {
   R.forEachObjIndexed((value, port) => {
     writePort(port, value)
-  })
+  }, portValueMap)
 }
 
 const getOutputRegister = () => outputRegister
