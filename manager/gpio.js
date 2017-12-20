@@ -26,6 +26,7 @@ const ports = R.mapObjIndexed((pin, port) => {
 
 const writePort = (port, value) => {
   if (outputRegister[port] !== value) {
+    console.log(`writing ${value} to port ${port}.`)
     ports[port].writeSync(value)
   }
   outputRegister[port] = value
