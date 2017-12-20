@@ -3,6 +3,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2'
 import { map } from 'ramda'
 import capitalize from 'capitalize'
 import io from 'socket.io-client'
+import toml from 'toml'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/solarized.css'
@@ -26,6 +27,7 @@ class App extends Component {
     super()
     this.state = {
       config: '',
+      tomlErr: '',
       reading: {},
     }
   }
@@ -41,7 +43,21 @@ class App extends Component {
   }
   handleEditorChange = (editor, data, value) => {
     this.setState({ config: value })
-    this.socket.emit('updateConfig', value)
+
+    try {
+      toml.parse(value)
+      this.socket.emit('updateConfig', value)
+    } catch (e) {
+      this.setState({
+        tomlErr:
+          'Parsing error on line ' +
+          e.line +
+          ', column ' +
+          e.column +
+          ': ' +
+          e.message,
+      })
+    }
   }
   render() {
     return (
@@ -85,6 +101,9 @@ class App extends Component {
           </table>
         </p>
         <h2>Configuration</h2>
+        {this.state.tomlErr && (
+          <p style={{ color: 'red' }}>{this.state.tomlErr}</p>
+        )}
         {this.state.config && (
           <CodeMirror
             value={this.state.config}
