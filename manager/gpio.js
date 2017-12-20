@@ -8,10 +8,10 @@ const portMap = {
   // 1: 23,
   2: 24,
   3: 27,
-  4: 22,
+  // 4: 22,
   5: 18,
   6: 4,
-  7: 11,
+  // 7: 11,
 }
 
 // this holds the port state
