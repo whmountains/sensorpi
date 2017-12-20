@@ -10,6 +10,7 @@
     "express": "^4.15.2",
     "ioredis": "^3.2.2",
     "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "luxon": "^0.2.7",
     "mathjs": "^3.17.0",
     "morgan": "^1.9.0",
