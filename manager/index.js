@@ -105,5 +105,7 @@ function applySetpoints(config, reading) {
     }
   }, config.rules)
 
+  console.log('new port state:', newPortState)
+
   writePorts(newPortState)
 }

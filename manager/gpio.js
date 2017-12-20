@@ -5,7 +5,7 @@ let { Gpio } = require('onoff')
 
 // map of ports to output
 const portMap = {
-  1: 23,
+  // 1: 23,
   2: 24,
   3: 27,
   4: 22,
@@ -25,8 +25,10 @@ const ports = R.mapObjIndexed((pin, port) => {
 }, portMap)
 
 const writePort = (port, value) => {
+  if (outputRegister[port] !== value) {
+    ports[port].writeSync(value)
+  }
   outputRegister[port] = value
-  ports[port].writeSync(value)
 }
 
 const writePorts = portValueMap => {

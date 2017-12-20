@@ -56,6 +56,7 @@ class App extends Component {
               window.location.hostname +
               ':8888/'
             }
+            target="_blank"
           >
             {window.location.protocol +
               '//' +
