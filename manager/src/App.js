@@ -73,6 +73,7 @@ class App extends Component {
     try {
       toml.parse(value)
       this.socket.emit('updateConfig', value)
+      this.setState({ tomlErr: '' })
     } catch (e) {
       this.setState({
         tomlErr:
