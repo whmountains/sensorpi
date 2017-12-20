@@ -22,7 +22,7 @@ const unitStrings = {
   pressure: 'hPa',
 }
 
-const ObjectTable = ({ keyHeader, valueHeader, data }) => {
+const ObjectTable = ({ keyHeader, valueHeader, data, valueTransform }) => {
   return (
     <table>
       <thead>
@@ -34,11 +34,43 @@ const ObjectTable = ({ keyHeader, valueHeader, data }) => {
           <tr>
             <td>{capitalize(param)}</td>
             <td>
-              {data[param]} {unitStrings[param] || ''}
+              {valueTransform
+                ? valueTransform(data[param], param)
+                : data[param]}
             </td>
           </tr>
         )
       })}
+    </table>
+  )
+}
+
+const HorizontalObjectTable = ({
+  keyHeader,
+  valueHeader,
+  data,
+  valueTransform,
+}) => {
+  return (
+    <table>
+      <tr>
+        <th>{keyHeader}</th>
+        {Object.keys(data).map(param => {
+          return <td>{capitalize(param)}</td>
+        })}
+      </tr>
+      <tr>
+        <th>{valueHeader}</th>
+        {Object.keys(data).map(param => {
+          return (
+            <td>
+              {valueTransform
+                ? valueTransform(data[param], param)
+                : data[param]}
+            </td>
+          )
+        })}
+      </tr>
     </table>
   )
 }
@@ -118,7 +150,7 @@ class App extends Component {
           />
         </p>
         <p>
-          <ObjectTable
+          <HorizontalObjectTable
             keyHeader="Port"
             valueHeader="Value"
             data={this.state.portState}
