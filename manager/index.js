@@ -32,6 +32,9 @@ setInterval(async () => {
   // apply setpoints
   applySetpoints(config, reading)
 
+  // output new port state to socket
+  io.emit('portState', getOutputRegister())
+
   // output reading to socket
   io.emit('reading', reading)
 

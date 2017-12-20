@@ -22,12 +22,34 @@ const unitStrings = {
   pressure: 'hPa',
 }
 
+const ObjectTable = ({ keyHeader, valueHeader, data }) => {
+  return (
+    <table>
+      <thead>
+        <th>{keyHeader}</th>
+        <th>{valueHeader}</th>
+      </thead>
+      {Object.keys(data).map(param => {
+        return (
+          <tr>
+            <td>{capitalize(param)}</td>
+            <td>
+              {data[param]} {unitStrings[param] || ''}
+            </td>
+          </tr>
+        )
+      })}
+    </table>
+  )
+}
+
 class App extends Component {
   constructor() {
     super()
     this.state = {
       config: '',
       tomlErr: '',
+      portState: {},
       reading: {},
     }
   }
@@ -35,6 +57,10 @@ class App extends Component {
     this.socket = io()
     this.socket.on('reading', reading => {
       this.setState({ reading: map(r => r.toFixed(2), reading) })
+    })
+
+    this.socket.on('portState', portState => {
+      this.setState({ portState: portState })
     })
 
     this.socket.on('config', config => {
@@ -83,22 +109,18 @@ class App extends Component {
         </p>
         <h2>Live Data</h2>
         <p>
-          <table>
-            <thead>
-              <th>Reading</th>
-              <th>Value</th>
-            </thead>
-            {Object.keys(this.state.reading).map(param => {
-              return (
-                <tr>
-                  <td>{capitalize(param)}</td>
-                  <td>
-                    {this.state.reading[param]} {unitStrings[param]}
-                  </td>
-                </tr>
-              )
-            })}
-          </table>
+          <ObjectTable
+            keyHeader="Reading"
+            valueHeader="Value"
+            data={this.state.reading}
+          />
+        </p>
+        <p>
+          <ObjectTable
+            keyHeader="Port"
+            valueHeader="Value"
+            data={this.state.portState}
+          />
         </p>
         <h2>Configuration</h2>
         {this.state.tomlErr && (
