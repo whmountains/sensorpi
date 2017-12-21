@@ -12,7 +12,8 @@ Tested on Raspberian Stretch.
 The first step is to boot to the desktop and do some basic setup. Open the configuration GUI at Pi -> Preferences -> Raspberry Pi Configuration.
 
 * Enable SSH and I2C under the interfaces tab
-* Set the correct timezone under teh locale
+* Set the correct timezone
+* Pick a sensible hostname
 
 You'll also want to connect to a wifi network unless you're using Ethernet. Reboot once you're done.
 
