@@ -29,7 +29,8 @@ const metricsList = [
 ]
 
 // db client
-const client = new Influx('http://192.168.1.162:8086/telegraf.autogen')
+// const client = new Influx('http://192.168.1.162:8086/telegraf.autogen')
+const client = new Influx('http://127.0.0.1:8086/telegraf.autogen')
 
 // mailgun client
 const mailgun = Mailgun({
@@ -39,24 +40,7 @@ const mailgun = Mailgun({
 
 const main = async () => {
   // config file
-  const config = {
-    calibration: {
-      temperature: {
-        coefficient: 1,
-        offset: 0,
-      },
-      humidity: {
-        coefficient: 1,
-        offset: 0,
-      },
-      pressure: {
-        coefficient: 1,
-        offset: 0,
-      },
-    },
-    rules: [],
-    summary: { emails: ['caleb@whiting.io'] },
-  }
+  const config = await getConfig()
 
   const stats = []
   const charts = []
