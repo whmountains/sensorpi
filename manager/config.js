@@ -24,6 +24,7 @@ const defaultConfig = {
     },
   },
   rules: [],
+  summary: { emails: [] },
 }
 
 // read and parse the config file
