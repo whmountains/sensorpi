@@ -10,6 +10,6 @@ const telegrafWrite = throttle(reading => {
   const message = JSON.stringify(reading)
 
   socket.send(message, telegrafPort, telegrafHost)
-}, 5000)
+}, 10000)
 
 module.exports = { telegrafWrite }

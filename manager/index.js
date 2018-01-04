@@ -15,7 +15,7 @@ const { telegrafWrite } = require('./telegraf')
 // configuration ==============
 
 const port = process.env.PORT || 3000
-const readSensorInterval = 100
+const readSensorInterval = 1000
 
 // bootstrap ==============
 
