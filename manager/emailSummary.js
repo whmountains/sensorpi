@@ -32,18 +32,19 @@ const metricsList = [
 // const client = new Influx('http://192.168.1.162:8086/telegraf.autogen')
 const client = new Influx('http://127.0.0.1:8086/telegraf.autogen')
 
-// mailgun client
-const mailgun = Mailgun({
-  apiKey: 'key-09eda9d71baa218019ce533475d5f28e',
-  domain: 'sensorpi.whiting.io',
-})
-
 const main = async () => {
   // config file
   const config = await getConfig()
 
+  // container variables
   const stats = []
   const charts = []
+
+  // mailgun client
+  const mailgun = Mailgun({
+    apiKey: config.mailgun.api_key,
+    domain: config.mailgun.domain,
+  })
 
   await Promise.all(
     metricsList.map(async ({ name, label }) => {
@@ -111,7 +112,7 @@ const main = async () => {
         <th>Max</th>
       </thead>
       ${rows}
-      
+
     </table>
     `
   }).join('\n')
