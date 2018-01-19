@@ -149,7 +149,7 @@ const main = async () => {
   })
 
   // send it!
-  await sendMsg({
+  await sendMsg(mailgun, {
     to: config.summary.emails,
     message: (await buildMsg(mail)).toString('ascii'),
   })
@@ -245,7 +245,7 @@ const buildMsg = msg =>
     })
   })
 
-const sendMsg = msg =>
+const sendMsg = (mailgun, msg) =>
   new Promise((resolve, reject) => {
     mailgun.messages().sendMime(msg, (err, result) => {
       if (err) {
