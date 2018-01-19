@@ -5,6 +5,10 @@ emails = ["caleb@whiting.io"]
 # when to send the emails (using cron format)
 schedule = "* * 21 * *"
 
+[mailgun]
+domain = "example.com"
+api_key = 'key-00000000000000000000000000000000'
+
 [calibration.temperature]
 coefficient = 1
 offset = -13
