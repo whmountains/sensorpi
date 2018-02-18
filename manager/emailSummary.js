@@ -28,13 +28,16 @@ const metricsList = [
   { name: 'pressure', label: 'Pressure (hPa)' },
 ]
 
-// db client
-// const client = new Influx('http://192.168.1.162:8086/telegraf.autogen')
-const client = new Influx('http://127.0.0.1:8086/telegraf.autogen')
-
 const main = async () => {
   // config file
   const config = await getConfig()
+
+  // db client
+  // const client = new Influx('http://192.168.1.162:8086/telegraf.autogen')
+  const client = new Influx('http://127.0.0.1:8086/sensorpi', {
+    username: config.influxdb.username,
+    password: config.influxdb.password,
+  })
 
   // container variables
   const stats = []
@@ -54,7 +57,7 @@ const main = async () => {
       const title = capitalize(name)
 
       // separate statistics by host
-      data.forEach(series => {
+      data.forEach((series) => {
         stats.push({
           name,
           title,
@@ -93,7 +96,7 @@ const main = async () => {
   const summarySection = _.map(statsByHost, (hostStats, host) => {
     const rows = hostStats
       .map(
-        stat => `<tr>
+        (stat) => `<tr>
         <th>${stat.title}</th>
         <td>${stat.min.toFixed(2)}</td>
         <td>${stat.average.toFixed(2)}</td>
@@ -200,7 +203,7 @@ async function chartFromData({ label }, dataSeries) {
   return await chartNode.getImageBuffer('image/png')
 }
 
-const datasetFromSeries = ({ colors }) => series => {
+const datasetFromSeries = ({ colors }) => (series) => {
   return {
     label: series.tags.host,
     borderColor: colorFromName(colors, series.tags.host),
@@ -224,8 +227,8 @@ const colorFromName = (colors, name) => {
   return colors[Math.abs(hash) % colors.length]
 }
 
-const getStatistics = series => {
-  const values = series.map(v => v[1])
+const getStatistics = (series) => {
+  const values = series.map((v) => v[1])
 
   return {
     average: _.mean(values),
@@ -234,7 +237,7 @@ const getStatistics = series => {
   }
 }
 
-const buildMsg = msg =>
+const buildMsg = (msg) =>
   new Promise((resolve, reject) => {
     msg.build((err, result) => {
       if (err) {

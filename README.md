@@ -28,7 +28,7 @@ sudo apt upgrade
 sudo apt install ntp
 
 # install the BME280 driver
-sudo apt-get install libi2c-dev i2c-tools wiringpi -y
+sudo apt install libi2c-dev i2c-tools wiringpi -y
 git clone https://github.com/andreiva/raspberry-pi-bme280.git
 cd raspberry-pi-bme280
 make
@@ -81,4 +81,23 @@ pm2 startup # follow the prompts
 # Start the Node.js server
 pm2 start index.js --name sensorpi --watch
 pm2 save
+```
+
+https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
+https://www.softwarecollections.org/en/scls/rhscl/python27/
+
+```
+scl enable devtoolset-7 bash
+scl enable python27 bash
+```
+
+iptables
+
+```
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           ctstate RELATED,ESTABLISHED
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:22
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8888
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8086
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8088
 ```
