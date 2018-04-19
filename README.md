@@ -24,6 +24,15 @@ Now run the setup script
 curl -o- -L https://raw.githubusercontent.com/whmountains/sensorpi/master/install.sh | bash
 ```
 
+You're not done yet!
+
+* Create a new InfluxDB user on the server.
+* Customize your telegraf.conf to send data to the server.
+* Give a unique password to the Raspberry Pi
+* (optional) Enable passwordless SSH login with your ssh key.
+
+## Scratchpat
+
 The rest of the setup can be completed via SSH or the built-in terminal.
 
 https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
