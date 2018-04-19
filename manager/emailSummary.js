@@ -166,7 +166,7 @@ const main = async () => {
 }
 
 const getMetricData = async (metricName, client) => {
-  const query = `SELECT mean("${metricName}") FROM "telegraf"."autogen"."socket_listener" WHERE time > now() - 24h GROUP BY time(10s), "host" FILL(none)`
+  const query = `SELECT mean("${metricName}") FROM "sensorpi"."autogen"."socket_listener" WHERE time > now() - 24h GROUP BY time(10s), "host" FILL(none)`
 
   const result = await client.queryRaw(query)
   return result.results[0].series
