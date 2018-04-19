@@ -21,7 +21,7 @@ Exit raspi-config and reboot.
 Now run the setup script
 
 ```shell
-curl -o- -L https://yarnpkg.com/install.sh | bash
+curl -o- -L https://raw.githubusercontent.com/whmountains/sensorpi/master/install.sh | bash
 ```
 
 The rest of the setup can be completed via SSH or the built-in terminal.
