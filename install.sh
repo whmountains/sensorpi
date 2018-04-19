@@ -44,10 +44,15 @@ sudo systemctl start chronograf
 sudo systemctl start telegraf
 sudo systemctl start kapacitor
 
-# install Node (the Pi's version of Node.JS is terribly out of date)
-echo "Installing Node.js via NVM"
+# install NVM (the Pi's version of Node.JS is terribly out of date)
+echo "Installing NVM"
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-source ~/.profile # reload the updated $PATH so NVM will be available immediately
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Install Node.js
+echo "Installing Node.js"
 nvm install node
 
 # install Yarn
