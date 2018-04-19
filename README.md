@@ -31,7 +31,7 @@ You're not done yet!
 * Give a unique password to the Raspberry Pi
 * (optional) Enable passwordless SSH login with your ssh key.
 
-## Scratchpat
+## Scratchpad
 
 The rest of the setup can be completed via SSH or the built-in terminal.
 
