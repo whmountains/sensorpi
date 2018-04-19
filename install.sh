@@ -60,8 +60,10 @@ nvm install node
 echo "Installing Yarn"
 rm -rf ~/.yarn # remove the old installation, in case it already exists
 curl -o- -L https://yarnpkg.com/install.sh | bash
+cat ~/.bashrc
+whoami
 source ~/.profile
-source ~/.bashrc
+echo $PATH
 
 # Install Node dependencies
 echo "Installing NPM dependencies"
