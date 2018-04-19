@@ -4,7 +4,6 @@
   "description": "Node utilities for sensorpi",
   "license": "AGPL-3.0",
   "dependencies": {
-    "bme280-sensor": "^0.1.6",
     "chart.js": "^2.7.1",
     "chartjs-node": "^1.6.0",
     "debug": "^3.1.0",
@@ -25,7 +24,6 @@
     "moment": "^2.20.1",
     "morgan": "^1.9.0",
     "mz": "^2.7.0",
-    "node-schedule": "^1.2.5",
     "onoff": "^1.1.8",
     "ramda": "^0.25.0",
     "resolve-dir": "^1.0.1",

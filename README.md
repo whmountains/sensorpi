@@ -21,6 +21,7 @@ Exit raspi-config and reboot.
 Now run the setup script
 
 ```shell
+sudo su
 curl -o- -L https://raw.githubusercontent.com/whmountains/sensorpi/master/install.sh | bash
 ```
 
