@@ -3,7 +3,7 @@
 # Update everything
 echo "Updating Packages"
 sudo apt update
-sudo apt upgrade
+sudo apt upgrade -y
 sudo apt update
 
 # install dependencies
