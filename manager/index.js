@@ -56,7 +56,7 @@ io.on('connection', async (socket) => {
 // get last reading
 app.get('/data', async (req, res) => {
   const { reading } = await getConfigAndReading()
-  res.send(reading)
+  res.send({ reading })
 })
 
 // manually change a GPIO
@@ -97,9 +97,9 @@ async function getConfigAndReading() {
   ])
 
   // calibrate the reading
-  reading = getCalibratedReading(config, rawReading)
+  reading = Object.assign({}, inputs, getCalibratedReading(config, rawReading))
 
-  return { config, reading, inputs }
+  return { config, reading }
 }
 
 // apply setpoints from the config file

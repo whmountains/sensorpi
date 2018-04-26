@@ -1,20 +1,27 @@
 const R = require('ramda')
 let { Gpio } = require('onoff')
 
-const inputMap = {
-  1: 19,
-  2: 26,
-}
-
-const ports = R.mapObjIndexed((pin, _port) => {
-  return new Gpio(pin, 'in')
-}, inputMap)
+const inputs = [
+  {
+    name: 'input1',
+    port: 1,
+    pin: 19,
+  },
+  {
+    name: 'input2',
+    port: 2,
+    pin: 26,
+  },
+].map((input) => {
+  return Object.assign({}, input, { gpioInstance: new Gpio(input.pin, 'in') })
+})
 
 exports.readInputs = async () => {
   const result = {}
 
-  for (port in Object.keys(ports)) {
-    result[port] = ports[port].readSync()
-  }
+  inputs.forEach(({ name, gpioInstance }) => {
+    result[name] = gpioInstance.readSync()
+  })
+
   return result
 }
