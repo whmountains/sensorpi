@@ -19,8 +19,9 @@ const inputs = [
 exports.readInputs = async () => {
   const result = {}
 
-  inputs.forEach(({ name, gpioInstance }) => {
-    result[name] = !gpioInstance.readSync() ? 1 : 0
+  inputs.forEach(({ name, pin }) => {
+    // result[name] = !gpioInstance.readSync() ? 1 : 0
+    result[name] = !new require('onoff').Gpio(19, 'in').readSync() ? 1 : 0
   })
 
   return result
