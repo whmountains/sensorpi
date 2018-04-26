@@ -9,6 +9,7 @@ const math = require('mathjs')
 
 const { getConfig, loadConfig, writeConfig } = require('./config')
 const { getReading, getCalibratedReading } = require('./sensor')
+const { readInputs } = require('./inputs')
 const { writePort, writePorts, getOutputRegister } = require('./gpio')
 const { telegrafWrite } = require('./telegraf')
 
@@ -43,11 +44,11 @@ setInterval(async () => {
 }, readSensorInterval)
 
 // socket communication
-io.on('connection', async socket => {
+io.on('connection', async (socket) => {
   console.log('A client connected!')
   socket.emit('config', await loadConfig())
 
-  socket.on('updateConfig', newConfig => writeConfig(newConfig))
+  socket.on('updateConfig', (newConfig) => writeConfig(newConfig))
 
   socket.on('disconnect', () => console.log('A client disconnected.'))
 })
@@ -89,20 +90,23 @@ http.listen(port, function() {
 })
 
 async function getConfigAndReading() {
-  // load the config file
-  const [config, rawReading] = await Promise.all([getConfig(), getReading()])
+  const [config, rawReading, inputs] = await Promise.all([
+    getConfig(),
+    getReading(),
+    readInputs(),
+  ])
 
-  // get a reading
+  // calibrate the reading
   reading = getCalibratedReading(config, rawReading)
 
-  return { config, reading }
+  return { config, reading, inputs }
 }
 
 // apply setpoints from the config file
 function applySetpoints(config, reading) {
   const newPortState = {}
 
-  R.forEach(rule => {
+  R.forEach((rule) => {
     if (math.eval(rule.condition || 'true', reading)) {
       Object.assign(newPortState, rule.outputs)
     }
