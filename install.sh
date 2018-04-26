@@ -73,7 +73,7 @@ yarn install
 # Install PM2
 echo "Installing PM2"
 yarn global add pm2
-pm2 startup systemd -u pi --hp /home/pi
+sudo env PATH=$PATH:`which node` `which pm2` startup systemd -u pi --hp /home/pi
 
 # Start the Node.js server
 echo "Starting manager server"

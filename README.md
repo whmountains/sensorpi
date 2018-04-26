@@ -30,6 +30,13 @@ You're not done yet!
 * Customize your telegraf.conf to send data to the server.
 * Give a unique password to the Raspberry Pi
 * (optional) Enable passwordless SSH login with your ssh key.
+* register with papertrail
+* connect to the vpn
+  * install openvpn
+  * generate certificate
+  * generate configuration
+  * copy configuration
+  * start and enable openvpn service
 
 ## Scratchpad
 
