@@ -25,6 +25,7 @@
     "morgan": "^1.9.0",
     "mz": "^2.7.0",
     "onoff": "^1.1.8",
+    "promise-queue": "^2.2.5",
     "ramda": "^0.25.0",
     "resolve-dir": "^1.0.1",
     "socket.io": "^1.7.3",

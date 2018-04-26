@@ -1,4 +1,5 @@
 const execa = require('execa')
+const Queue = require('promise-queue')
 
 // get a calibrated sensor reading
 function getCalibratedReading(config, reading) {
@@ -15,9 +16,11 @@ function getCalibratedReading(config, reading) {
   }
 }
 
+const queue = new Queue(1, Infinity)
+
 // get a raw, uncalibrated reading
 async function getReading() {
-  const { stdout } = await execa('bme280')
+  const { stdout } = await queue.add(execa('bme280'))
   return JSON.parse(stdout)
 }
 
