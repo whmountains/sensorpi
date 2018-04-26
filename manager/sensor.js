@@ -20,7 +20,7 @@ const queue = new Queue(1, Infinity)
 
 // get a raw, uncalibrated reading
 async function getReading() {
-  const { stdout } = await queue.add(execa('bme280'))
+  const { stdout } = await queue.add(() => execa('bme280'))
   return JSON.parse(stdout)
 }
 
