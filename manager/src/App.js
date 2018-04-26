@@ -29,7 +29,7 @@ const ObjectTable = ({ keyHeader, valueHeader, data, valueTransform }) => {
         <th>{keyHeader}</th>
         <th>{valueHeader}</th>
       </thead>
-      {Object.keys(data).map(param => {
+      {Object.keys(data).map((param) => {
         return (
           <tr>
             <td>{capitalize(param)}</td>
@@ -55,13 +55,13 @@ const HorizontalObjectTable = ({
     <table>
       <tr>
         <th>{keyHeader}</th>
-        {Object.keys(data).map(param => {
+        {Object.keys(data).map((param) => {
           return <td>{capitalize(param)}</td>
         })}
       </tr>
       <tr>
         <th>{valueHeader}</th>
-        {Object.keys(data).map(param => {
+        {Object.keys(data).map((param) => {
           return (
             <td>
               {valueTransform
@@ -87,15 +87,15 @@ class App extends Component {
   }
   componentDidMount() {
     this.socket = io()
-    this.socket.on('reading', reading => {
-      this.setState({ reading: map(r => r.toFixed(2), reading) })
+    this.socket.on('reading', (reading) => {
+      this.setState({ reading: map((r) => r.toFixed(2), reading) })
     })
 
-    this.socket.on('portState', portState => {
+    this.socket.on('portState', (portState) => {
       this.setState({ portState: portState })
     })
 
-    this.socket.on('config', config => {
+    this.socket.on('config', (config) => {
       this.setState({ config })
     })
   }
@@ -145,7 +145,11 @@ class App extends Component {
           <ObjectTable
             keyHeader="Reading"
             valueHeader="Value"
-            valueTransform={(v, k) => `${v} ${unitStrings[k]}`}
+            valueTransform={(v, k) =>
+              k.startsWith('input')
+                ? !!v ? 'on' : 'off'
+                : `${v} ${unitStrings[k]}`
+            }
             data={this.state.reading}
           />
         </p>
@@ -154,7 +158,7 @@ class App extends Component {
             keyHeader="Port"
             valueHeader="Value"
             data={this.state.portState}
-            valueTransform={v => (!v ? 'off' : 'on')}
+            valueTransform={(v) => (!v ? 'off' : 'on')}
           />
         </p>
         <h2>Configuration</h2>

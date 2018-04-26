@@ -20,7 +20,7 @@ exports.readInputs = async () => {
   const result = {}
 
   inputs.forEach(({ name, gpioInstance }) => {
-    result[name] = gpioInstance.readSync()
+    result[name] = !gpioInstance.readSync() ? 1 : 0
   })
 
   return result
