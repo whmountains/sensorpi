@@ -145,11 +145,13 @@ class App extends Component {
           <ObjectTable
             keyHeader="Reading"
             valueHeader="Value"
-            valueTransform={(v, k) =>
-              k.startsWith('input')
-                ? !!v ? 'on' : 'off'
-                : `${v} ${unitStrings[k]}`
-            }
+            valueTransform={(v, k) => {
+              if (k.startsWith('input')) {
+                return !!v ? 'on' : 'off'
+              } else {
+                return `${v} ${unitStrings[k]}`
+              }
+            }}
             data={this.state.reading}
           />
         </p>
