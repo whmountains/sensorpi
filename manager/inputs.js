@@ -13,7 +13,9 @@ const inputs = [
     pin: 26,
   },
 ].map((input) => {
-  return Object.assign({}, input, { gpioInstance: new Gpio(input.pin, 'both') })
+  return Object.assign({}, input, {
+    gpioInstance: new Gpio(input.pin, 'in', 'both'),
+  })
 })
 
 exports.readInputs = async () => {
