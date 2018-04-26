@@ -88,7 +88,7 @@ class App extends Component {
   componentDidMount() {
     this.socket = io()
     this.socket.on('reading', (reading) => {
-      this.setState({ reading: map((r) => r.toFixed(2), reading) })
+      this.setState({ reading })
     })
 
     this.socket.on('portState', (portState) => {
@@ -149,7 +149,7 @@ class App extends Component {
               if (k.startsWith('input')) {
                 return !!v ? 'on' : 'off'
               } else {
-                return `${v} ${unitStrings[k]}`
+                return `${v.toFixed(2)} ${unitStrings[k]}`
               }
             }}
             data={this.state.reading}
