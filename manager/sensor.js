@@ -1,5 +1,13 @@
 const execa = require('execa')
 const Queue = require('promise-queue')
+const BME280 = require('bme280-sensor')
+
+const bme280 = new BME280()
+
+const initialization = bme280.init().catch((e) => {
+  console.error('Error initializing BME280 sensor!', e)
+  process.exit(1)
+})
 
 // get a calibrated sensor reading
 function getCalibratedReading(config, reading) {
@@ -20,8 +28,16 @@ const queue = new Queue(1, Infinity)
 
 // get a raw, uncalibrated reading
 async function getReading() {
-  const { stdout } = await queue.add(() => execa('bme280'))
-  return JSON.parse(stdout)
+  return queue.add(async () => {
+    await initialization
+
+    const sensorData = await bme280.readSensorData()
+    return {
+      temperature: sensorData.temperature_C,
+      humidity: sensorData.humidity,
+      pressure: sensorData.pressure_hPa,
+    }
+  })
 }
 
 module.exports = { getCalibratedReading, getReading }
