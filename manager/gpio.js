@@ -2,7 +2,7 @@ const R = require('ramda')
 let { Gpio } = require('onoff')
 
 // map of ports to output
-const portMap = {
+const portMap = require('../../port_map') || {
   1: 17,
   2: 27,
   3: 22,
