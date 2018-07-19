@@ -2,11 +2,16 @@ const R = require('ramda')
 let { Gpio } = require('onoff')
 
 // map of ports to output
-const portMap = require('../../port_map') || {
+let portMap = {
   1: 17,
   2: 27,
   3: 22,
   4: 10,
+}
+try {
+  portMap = require('../../port_map')
+} catch (e) {
+  console.log('using default port map')
 }
 
 // this holds the port state
