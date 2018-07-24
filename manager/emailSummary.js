@@ -11,16 +11,17 @@ const path = require('path')
 const devip = require('dev-ip')
 const { getConfig } = require('./config')
 const Mailgun = require('mailgun-js')
+const palette = require('google-palette')
 
-const colorList = [
-  'rgb(255, 99, 132)', // red
-  'rgb(255, 159, 64)', // orange
-  'rgb(255, 205, 86)', // yellow
-  'rgb(75, 192, 192)', // green
-  'rgb(54, 162, 235)', // blue
-  'rgb(153, 102, 255)', // purple
-  'rgb(201, 203, 207)', // grey
-]
+// const colorList = [
+//   'rgb(255, 99, 132)', // red
+//   'rgb(255, 159, 64)', // orange
+//   'rgb(255, 205, 86)', // yellow
+//   'rgb(75, 192, 192)', // green
+//   'rgb(54, 162, 235)', // blue
+//   'rgb(153, 102, 255)', // purple
+//   'rgb(201, 203, 207)', // grey
+// ]
 
 const metricsList = [
   { name: 'temperature', label: 'Temperature (˚C)' },
@@ -173,10 +174,14 @@ const getMetricData = async (metricName, client) => {
 }
 
 async function chartFromData({ label }, dataSeries) {
+  const colors = palette('mpn65', dataSeries.length)
+
   const chartOptions = {
     type: 'line',
     data: {
-      datasets: dataSeries.map(datasetFromSeries({ colors: colorList })),
+      datasets: dataSeries
+        .sort(lexographicSort)
+        .map(datasetFromSeries({ colors })),
     },
     options: {
       scales: {
@@ -203,7 +208,7 @@ async function chartFromData({ label }, dataSeries) {
   return await chartNode.getImageBuffer('image/png')
 }
 
-const datasetFromSeries = ({ colors }) => (series) => {
+const datasetFromSeries = ({ colors }) => (series, i) => {
   return {
     label: series.tags.host,
     borderColor: colorFromName(colors, series.tags.host),
@@ -214,6 +219,20 @@ const datasetFromSeries = ({ colors }) => (series) => {
     fill: false,
     pointRadius: 0,
   }
+}
+
+const lexographicSort = (a, b) => {
+  var nameA = a.name.toUpperCase()
+  var nameB = b.name.toUpperCase()
+  if (nameA < nameB) {
+    return -1
+  }
+  if (nameA > nameB) {
+    return 1
+  }
+
+  // names must be equal
+  return 0
 }
 
 const colorFromName = (colors, name) => {
