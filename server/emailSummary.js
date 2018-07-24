@@ -9,7 +9,7 @@ const MailComposer = require('mailcomposer')
 const os = require('os')
 const path = require('path')
 const devip = require('dev-ip')
-const { getConfig } = require('./config')
+const { getConfig } = require('../manager/config')
 const Mailgun = require('mailgun-js')
 const palette = require('google-palette')
 
@@ -21,7 +21,7 @@ const palette = require('google-palette')
 //   'rgb(54, 162, 235)', // blue
 //   'rgb(153, 102, 255)', // purple
 //   'rgb(201, 203, 207)', // grey
-// ]
+//
 
 const metricsList = [
   { name: 'temperature', label: 'Temperature (˚C)' },

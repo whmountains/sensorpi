@@ -1,0 +1,30 @@
+{
+  "name": "sensorpi-manager",
+  "version": "1.2.0",
+  "description": "Node utilities for sensorpi",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "capitalize": "^1.0.0",
+    "chart.js": "^2.7.1",
+    "chartjs-node": "^1.6.0",
+    "dev-ip": "^1.0.1",
+    "google-palette": "^1.1.0",
+    "hasha": "^3.0.0",
+    "influxdb-nodejs": "^2.7.5",
+    "lodash": "^4.17.4",
+    "lodash.debounce": "^4.0.8",
+    "mailcomposer": "^4.0.2",
+    "mailgun-js": "^0.13.1",
+    "mz": "^2.7.0",
+    "ramda": "^0.25.0",
+    "resolve-dir": "^1.0.1",
+    "toml": "^2.3.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
