@@ -31,6 +31,7 @@ const metricsList = [
 
 const main = async () => {
   // config file
+  console.log('loading config')
   const config = await getConfig()
 
   // db client
@@ -52,11 +53,14 @@ const main = async () => {
 
   await Promise.all(
     metricsList.map(async ({ name, label }) => {
+      console.log(`fetching data for ${name}`)
+
       // fetch data for this metric
       const data = await getMetricData(name, client)
 
       const title = capitalize(name)
 
+      console.log(`Generating chart for ${name}`)
       // separate statistics by host
       data.forEach((series) => {
         stats.push({
@@ -94,6 +98,7 @@ const main = async () => {
   // })
 
   // generate summaries
+  console.log(`Generating email`)
   const summarySection = _.map(statsByHost, (hostStats, host) => {
     const rows = hostStats
       .map(
