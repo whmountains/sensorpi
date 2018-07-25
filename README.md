@@ -60,3 +60,19 @@ ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8888
 ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8086
 ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8088
 ```
+
+## Daily Email Report
+
+0 18 \* \* \* /usr/bin/node /home/sensorpi/sensorpi/manager/emailSummary.js >> /home/sensorpi/email.log 2>&1
+
+## Tricks for installing on CentOS 6
+
+Install developer toolset 7: https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/
+
+Add `scl enable devtoolset-7 bash` to `~/.bash_profile`
+
+Install node-gyp `yarn global add node-gyp` if it's not already there.
+
+Run `yarn install` in the project. (It will encounter a build error.)
+
+Cd to the offending node_module dir. Run `node-gyp build`.
