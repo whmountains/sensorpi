@@ -216,7 +216,7 @@ async function chartFromData({ label }, dataSeries) {
 const datasetFromSeries = ({ colors }) => (series, i) => {
   return {
     label: series.tags.host,
-    borderColor: colorFromName(colors, series.tags.host),
+    borderColor: '#' + colors[i],
     data: series.values.map(([time, value]) => ({
       x: time,
       y: value,
