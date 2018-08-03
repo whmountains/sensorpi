@@ -63,7 +63,7 @@ ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:8088
 
 ## Daily Email Report
 
-0 18 \* \* \* /usr/bin/node /home/sensorpi/sensorpi/manager/emailSummary.js >> /home/sensorpi/email.log 2>&1
+0 18 * * * /usr/bin/node /usr/local/src/sensorpi/manager/emailSummary.js
 
 ## Tricks for installing on CentOS 6
 
